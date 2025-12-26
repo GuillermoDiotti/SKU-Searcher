@@ -148,5 +148,3 @@ function openImageModal(imgSrc) {
 function closeModal() {
     document.getElementById('image-modal').classList.add('hidden');
 }
-
-setupDownloadAll();
