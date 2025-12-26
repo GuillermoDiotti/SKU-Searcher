@@ -109,7 +109,8 @@ if (isVideo) {
             const imgSrc = file.thumbnail || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23333" width="200" height="200"/><text x="50%" y="50%" text-anchor="middle" fill="white" dy=".3em" font-size="14">Cargando...</text></svg>';
             
             card.innerHTML = `
-                <img src="${imgSrc}" alt="${file.name}" class="media-preview" loading="lazy">
+                <img src="${imgSrc}" alt="${file.name}" class="media-preview" loading="lazy" 
+                     onclick="openImageModal('${imgSrc}')" style="cursor: zoom-in;">
                 <div class="media-overlay">
                     <a href="${file.downloadUrl}" download class="btn btn-primary btn-sm" title="Descargar">
                         <i class="fa-solid fa-download"></i>
@@ -154,6 +155,17 @@ function setupDownloadAll() {
             }, index * 500); // Delay para no saturar
         });
     });
+}
+
+function openImageModal(imgSrc) {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image');
+    modalImg.src = imgSrc;
+    modal.classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('image-modal').classList.add('hidden');
 }
 
 setupDownloadAll();
