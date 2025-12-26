@@ -89,21 +89,19 @@ function renderResults(files) {
 
         const isVideo = file.type.startsWith('video');
         
-        if (isVideo) {
+if (isVideo) {
+            // Usar iframe embebido para videos
+            const embedUrl = `https://drive.google.com/file/d/${file.id}/preview`;
+            
             card.innerHTML = `
-                <div class="video-placeholder">
-                    <i class="fa-solid fa-circle-play" style="font-size: 3rem; color: var(--primary-color);"></i>
-                    <p style="margin-top: 1rem; font-size: 0.9rem;">${file.name}</p>
-                </div>
+                <iframe src="${embedUrl}" class="media-preview" frameborder="0" allow="autoplay" allowfullscreen></iframe>
                 <div class="media-overlay">
-                    <a href="${file.viewUrl}" target="_blank" class="btn btn-primary btn-sm" title="Ver Video">
-                        <i class="fa-solid fa-play"></i>
-                    </a>
-                    <a href="${file.downloadUrl}" download class="btn btn-secondary btn-sm" title="Descargar" style="margin-left: 0.5rem;">
+                    <a href="${file.downloadUrl}" download class="btn btn-primary btn-sm" title="Descargar">
                         <i class="fa-solid fa-download"></i>
                     </a>
                 </div>
             `;
+        }
 } else {
             // Usar thumbnail base64 si existe, sino placeholder
             const imgSrc = file.thumbnail || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23333" width="200" height="200"/><text x="50%" y="50%" text-anchor="middle" fill="white" dy=".3em" font-size="14">Cargando...</text></svg>';
