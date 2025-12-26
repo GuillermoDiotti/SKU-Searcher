@@ -145,15 +145,28 @@ let allFiles = [];
 
 function setupDownloadAll() {
     const downloadAllBtn = document.getElementById('download-all-btn');
-    downloadAllBtn.addEventListener('click', () => {
-        allFiles.forEach((file, index) => {
+    downloadAllBtn.addEventListener('click', async () => {
+        if (allFiles.length === 0) return;
+        
+        // Mostrar confirmación
+        if (!confirm(`¿Descargar ${allFiles.length} archivos?`)) return;
+        
+        // Crear ZIP usando JSZip (necesitarás agregar la librería)
+        // O alternativamente, descargar uno por uno con más delay
+        for (let i = 0; i < allFiles.length; i++) {
+            const file = allFiles[i];
             setTimeout(() => {
                 const a = document.createElement('a');
                 a.href = file.downloadUrl;
                 a.download = file.name;
+                a.target = '_blank'; // Abrir en nueva pestaña
+                document.body.appendChild(a);
                 a.click();
-            }, index * 500); // Delay para no saturar
-        });
+                document.body.removeChild(a);
+            }, i * 1500); // 1.5 segundos entre cada descarga
+        }
+        
+        alert('Se iniciarán las descargas. Permite las descargas múltiples si tu navegador lo solicita.');
     });
 }
 
