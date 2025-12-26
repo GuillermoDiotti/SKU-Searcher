@@ -243,7 +243,10 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">Analizando SKUs...</p>';
         
         try {
-            const response = await fetch(`${APPS_SCRIPT_URL}?action=analyze`);            const data = await response.json();
+            const response = await fetch(`${APPS_SCRIPT_URL}?action=analyze`);            
+            const data = await response.json();
+
+            console.log('Respuesta del servidor:', data); // AGREGAR ESTA LÍNEA
             
             if (data.status === 'success') {
                 renderAnalysisResults(data.incomplete, container);
