@@ -83,8 +83,6 @@ async function handleSearch() {
 function renderResults(files) {
     els.resultsSection.classList.remove('hidden');
 
-    allFiles = files; // Guardar archivos para descarga masiva
-
     files.forEach(file => {
         const card = document.createElement('div');
         card.className = 'media-card';
@@ -138,46 +136,6 @@ function showStatus(msg, isError = false) {
 function openVideoModal(fileId, fileName) {
     const viewUrl = `https://drive.google.com/file/d/${fileId}/view`;
     window.open(viewUrl, '_blank');
-}
-
-// Descargar todos los archivos
-let allFiles = [];
-
-function setupDownloadAll() {
-    const downloadAllBtn = document.getElementById('download-all-btn');
-    downloadAllBtn.addEventListener('click', async () => {
-        if (allFiles.length === 0) return;
-        
-        if (!confirm(`¿Descargar ${allFiles.length} archivos?`)) return;
-        
-        downloadAllBtn.disabled = true;
-        
-        for (let i = 0; i < allFiles.length; i++) {
-            const file = allFiles[i];
-            
-            setTimeout(async () => {
-                const a = document.createElement('a');
-                
-                // Si es base64, convertir a blob
-                if (file.thumbnail && file.thumbnail.startsWith('data:')) {
-                    const response = await fetch(file.thumbnail);
-                    const blob = await response.blob();
-                    a.href = URL.createObjectURL(blob);
-                } else {
-                    a.href = file.downloadUrl;
-                }
-                
-                a.download = file.name;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                
-                if (i === allFiles.length - 1) {
-                    downloadAllBtn.disabled = false;
-                }
-            }, i * 1500);
-        }
-    });
 }
 
 function openImageModal(imgSrc) {
