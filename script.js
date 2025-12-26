@@ -149,67 +149,73 @@ function closeModal() {
     document.getElementById('image-modal').classList.add('hidden');
 }
 
-// Tree Explorer
-document.getElementById('load-tree-btn').addEventListener('click', async function() {
-    const btn = this;
-    const container = document.getElementById('tree-container');
+// Tree Explorer - Esperar a que cargue el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    const loadTreeBtn = document.getElementById('load-tree-btn');
     
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cargando...';
-    container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">Cargando estructura...</p>';
-    
-    try {
-        const response = await fetch(`${APPS_SCRIPT_URL}?tree=true`);
-        const data = await response.json();
-        
-        if (data.status === 'success') {
-            container.innerHTML = '';
-            const tree = data.tree;
+    if (loadTreeBtn) {
+        loadTreeBtn.addEventListener('click', async function() {
+            const btn = this;
+            const container = document.getElementById('tree-container');
             
-            const rootDiv = document.createElement('div');
-            rootDiv.className = 'tree-item tree-level-0';
-            rootDiv.innerHTML = `<i class="fa-solid fa-folder-open"></i> ${tree.name}`;
-            container.appendChild(rootDiv);
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cargando...';
+            container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">Cargando estructura...</p>';
             
-            tree.children.forEach(category => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'tree-item tree-level-1';
-                categoryDiv.innerHTML = `<i class="fa-solid fa-folder"></i> ${category.name} <span style="color:var(--text-muted);font-size:0.85rem;">(${category.children.length})</span>`;
+            try {
+                const response = await fetch(`${APPS_SCRIPT_URL}?tree=true`);
+                const data = await response.json();
                 
-                const skusContainer = document.createElement('div');
-                skusContainer.className = 'tree-collapsed';
-                
-                category.children.forEach(sku => {
-                    const skuDiv = document.createElement('div');
-                    skuDiv.className = 'tree-item tree-level-2';
-                    skuDiv.innerHTML = `<i class="fa-solid fa-cube"></i> ${sku.name}`;
+                if (data.status === 'success') {
+                    container.innerHTML = '';
+                    const tree = data.tree;
                     
-                    skuDiv.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        els.skuInput.value = sku.name;
-                        handleSearch();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    const rootDiv = document.createElement('div');
+                    rootDiv.className = 'tree-item tree-level-0';
+                    rootDiv.innerHTML = `<i class="fa-solid fa-folder-open"></i> ${tree.name}`;
+                    container.appendChild(rootDiv);
+                    
+                    tree.children.forEach(category => {
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'tree-item tree-level-1';
+                        categoryDiv.innerHTML = `<i class="fa-solid fa-folder"></i> ${category.name} <span style="color:var(--text-muted);font-size:0.85rem;">(${category.children.length})</span>`;
+                        
+                        const skusContainer = document.createElement('div');
+                        skusContainer.className = 'tree-collapsed';
+                        
+                        category.children.forEach(sku => {
+                            const skuDiv = document.createElement('div');
+                            skuDiv.className = 'tree-item tree-level-2';
+                            skuDiv.innerHTML = `<i class="fa-solid fa-cube"></i> ${sku.name}`;
+                            
+                            skuDiv.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                els.skuInput.value = sku.name;
+                                handleSearch();
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            });
+                            
+                            skusContainer.appendChild(skuDiv);
+                        });
+                        
+                        categoryDiv.addEventListener('click', () => {
+                            skusContainer.classList.toggle('tree-collapsed');
+                            const icon = categoryDiv.querySelector('i');
+                            icon.className = skusContainer.classList.contains('tree-collapsed') 
+                                ? 'fa-solid fa-folder' 
+                                : 'fa-solid fa-folder-open';
+                        });
+                        
+                        container.appendChild(categoryDiv);
+                        container.appendChild(skusContainer);
                     });
-                    
-                    skusContainer.appendChild(skuDiv);
-                });
-                
-                categoryDiv.addEventListener('click', () => {
-                    skusContainer.classList.toggle('tree-collapsed');
-                    const icon = categoryDiv.querySelector('i');
-                    icon.className = skusContainer.classList.contains('tree-collapsed') 
-                        ? 'fa-solid fa-folder' 
-                        : 'fa-solid fa-folder-open';
-                });
-                
-                container.appendChild(categoryDiv);
-                container.appendChild(skusContainer);
-            });
-        }
-    } catch (error) {
-        container.innerHTML = '<p style="color:#ff6b6b;">Error de conexión</p>';
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-sync"></i> Recargar';
+                }
+            } catch (error) {
+                container.innerHTML = '<p style="color:#ff6b6b;">Error de conexión</p>';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-sync"></i> Recargar';
+            }
+        });
     }
 });
