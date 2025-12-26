@@ -221,6 +221,10 @@ body {
 }
 
 @media (max-width: 600px) {
+    .search-container {
+        width: 100%
+    }
+    
     .app-container {
         padding: 1rem;
     }
