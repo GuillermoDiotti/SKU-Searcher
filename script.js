@@ -85,18 +85,30 @@ function renderResults(files) {
         const card = document.createElement('div');
         card.className = 'media-card';
 
-        // Usar proxy de Google para evitar CORS
-        const imageUrl = `https://drive.google.com/uc?export=view&id=${file.id}`;
-        const viewUrl = `https://drive.google.com/file/d/${file.id}/view`;
+        const isVideo = file.type.startsWith('video');
+        const viewUrl = `https://drive.google.com/file/d/${file.id}/preview`;
+        const downloadUrl = `https://drive.google.com/uc?export=download&id=${file.id}`;
 
-        card.innerHTML = `
-            <img src="${imageUrl}" alt="${file.name}" class="media-preview" loading="lazy">
-            <div class="media-overlay">
-                <a href="${viewUrl}" target="_blank" class="btn btn-primary btn-sm" title="Ver en Drive">
-                    <i class="fa-solid fa-eye"></i>
-                </a>
-            </div>
-        `;
+        if (isVideo) {
+            card.innerHTML = `
+                <iframe src="${viewUrl}" class="media-preview" frameborder="0" allowfullscreen></iframe>
+                <div class="media-overlay">
+                    <a href="${downloadUrl}" class="btn btn-primary btn-sm" title="Descargar">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
+                </div>
+            `;
+        } else {
+            card.innerHTML = `
+                <iframe src="${viewUrl}" class="media-preview" frameborder="0"></iframe>
+                <div class="media-overlay">
+                    <a href="${downloadUrl}" class="btn btn-primary btn-sm" title="Descargar">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
+                </div>
+            `;
+        }
+        
         els.mediaGrid.appendChild(card);
     });
 }
