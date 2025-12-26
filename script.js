@@ -57,6 +57,8 @@ async function handleSearch() {
         }
 
         const data = await response.json();
+        console.log('Datos recibidos:', data); // AGREGAR ESTA LÍNEA
+
 
         if (data.status === 'error') {
             showStatus(data.message, true);
