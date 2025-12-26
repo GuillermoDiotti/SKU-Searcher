@@ -219,3 +219,76 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// --- Análisis de SKUs ---
+
+const analyzeBtn = document.createElement('button');
+analyzeBtn.id = 'analyze-btn';
+analyzeBtn.className = 'btn btn-secondary btn-sm';
+analyzeBtn.innerHTML = '<i class="fa-solid fa-chart-simple"></i> Analizar SKUs';
+analyzeBtn.style.marginLeft = '0.5rem';
+
+document.querySelector('.section-header').appendChild(analyzeBtn);
+
+analyzeBtn.addEventListener('click', async () => {
+    const btn = analyzeBtn;
+    const container = document.getElementById('tree-container');
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analizando...';
+    container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">Analizando SKUs...</p>';
+    
+    try {
+        const response = await fetch(`${APPS_SCRIPT_URL}?analyze=true`);
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            renderAnalysisResults(data.incomplete, container);
+        }
+    } catch (error) {
+        container.innerHTML = '<p style="color:#ff6b6b;">Error en análisis</p>';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-chart-simple"></i> Analizar SKUs';
+    }
+});
+
+function renderAnalysisResults(incomplete, container) {
+    container.innerHTML = '';
+    
+    if (incomplete.length === 0) {
+        container.innerHTML = '<p style="color:#00b894;text-align:center;">✓ Todos los SKUs completos</p>';
+        return;
+    }
+    
+    const title = document.createElement('div');
+    title.className = 'tree-item tree-level-0';
+    title.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> SKUs Incompletos (${incomplete.length})`;
+    container.appendChild(title);
+    
+    incomplete.forEach(sku => {
+        const skuDiv = document.createElement('div');
+        skuDiv.className = 'tree-item tree-level-2';
+        
+        const issues = [];
+        if (!sku.hasVideo) issues.push('Sin video');
+        if (sku.fileCount < 45) issues.push(`${sku.fileCount} archivos`);
+        
+        skuDiv.innerHTML = `
+            <i class="fa-solid fa-exclamation-circle" style="color:#ff6b6b;"></i> 
+            ${sku.name} 
+            <span style="color:#ff6b6b;font-size:0.85rem;margin-left:0.5rem;">
+                (${issues.join(', ')})
+            </span>
+        `;
+        
+        skuDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+            els.skuInput.value = sku.name;
+            handleSearch();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        container.appendChild(skuDiv);
+    });
+}
