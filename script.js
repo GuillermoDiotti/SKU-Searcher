@@ -272,7 +272,7 @@ function renderAnalysisResults(incomplete, container) {
         
         const issues = [];
         if (!sku.hasVideo) issues.push('Sin video');
-        if (sku.fileCount < 45) issues.push(`${sku.fileCount} archivos`);
+        if (sku.fileCount < 6) issues.push(`${sku.fileCount} archivos`);
         
         skuDiv.innerHTML = `
             <i class="fa-solid fa-exclamation-circle" style="color:#ff6b6b;"></i> 
