@@ -6,7 +6,7 @@
  * 2. Pega la URL de tu Web App aquí abajo.
  */
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiuvZWamXcn0gDnHDwTi7mvMUA59I7MRfYo2JPbpU4Ec2IocOQNgFKDSxaJ7tbQPv3RA/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyOUJHJyDEyJs0DcjpHpZd_dKp8Q4n0n1yIyPRrTpjpkAZxUs-IcGkwTgyApR6HpNVzbQ/exec';
 
 // Elementos del DOM
 const els = {
