@@ -90,11 +90,11 @@ function renderResults(files) {
         const isVideo = file.type.startsWith('video');
         
 if (isVideo) {
-            // Usar iframe embebido para videos
-            const embedUrl = `https://drive.google.com/file/d/${file.id}/preview`;
-            
             card.innerHTML = `
-                <iframe src="${embedUrl}" class="media-preview" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+                <div class="video-placeholder" onclick="openVideoModal('${file.id}', '${file.name}')">
+                    <i class="fa-solid fa-circle-play" style="font-size: 3rem; color: var(--primary-color); cursor: pointer;"></i>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">${file.name}</p>
+                </div>
                 <div class="media-overlay">
                     <a href="${file.downloadUrl}" download class="btn btn-primary btn-sm" title="Descargar">
                         <i class="fa-solid fa-download"></i>
@@ -129,4 +129,10 @@ function showStatus(msg, isError = false) {
 
     if (isError) els.statusText.style.color = '#ff6b6b';
     else els.statusText.style.color = 'var(--text-muted)';
+}
+
+
+function openVideoModal(fileId, fileName) {
+    const viewUrl = `https://drive.google.com/file/d/${fileId}/view`;
+    window.open(viewUrl, '_blank');
 }
