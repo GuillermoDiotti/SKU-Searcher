@@ -85,22 +85,12 @@ function renderResults(files) {
         const card = document.createElement('div');
         card.className = 'media-card';
 
-        const isImage = file.type.startsWith('image');
-
-        // Google Drive Thumbnail Logic
-        // Usually ends in =s220. We want bigger.
-        let thumbUrl = file.thumbnail;
-        if (isImage && thumbUrl) {
-            thumbUrl = thumbUrl.replace('=s220', '=s600');
-        }
-
-        // Convertir URL de Drive a URL de imagen directa
-        const imageUrl = `https://drive.google.com/thumbnail?id=${file.id}&sz=w800`;
+        // Usar proxy de Google para evitar CORS
+        const imageUrl = `https://drive.google.com/uc?export=view&id=${file.id}`;
         const viewUrl = `https://drive.google.com/file/d/${file.id}/view`;
-        
+
         card.innerHTML = `
-            <img src="${imageUrl}" alt="${file.name}" class="media-preview" loading="lazy" 
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23333%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22white%22 dy=%22.3em%22>Error</text></svg>'">
+            <img src="${imageUrl}" alt="${file.name}" class="media-preview" loading="lazy">
             <div class="media-overlay">
                 <a href="${viewUrl}" target="_blank" class="btn btn-primary btn-sm" title="Ver en Drive">
                     <i class="fa-solid fa-eye"></i>
