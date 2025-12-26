@@ -280,6 +280,9 @@ function renderAnalysisResults(incomplete, container) {
         const issues = [];
         if (!sku.hasVideo) issues.push('Sin video');
         if (sku.fileCount < 6) issues.push(`${sku.fileCount} archivos`);
+
+        // Solo mostrar si tiene problemas
+        if (issues.length === 0) return;
         
         skuDiv.innerHTML = `
             <i class="fa-solid fa-exclamation-circle" style="color:#ff6b6b;"></i> 
