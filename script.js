@@ -86,23 +86,37 @@ function renderResults(files) {
         card.className = 'media-card';
 
         const isVideo = file.type.startsWith('video');
-        const viewUrl = `https://drive.google.com/file/d/${file.id}/preview`;
-        const downloadUrl = `https://drive.google.com/uc?export=download&id=${file.id}`;
-
+        
+        // Usar diferentes URLs según el tipo
+        const directUrl = `https://drive.google.com/uc?export=download&id=${file.id}`;
+        const proxyUrl = `https://drive.usercontent.google.com/download?id=${file.id}&export=view`;
+        
         if (isVideo) {
+            // Para videos, mostrar un botón de play y abrir en nueva pestaña
             card.innerHTML = `
-                <iframe src="${viewUrl}" class="media-preview" frameborder="0" allowfullscreen></iframe>
+                <div class="video-placeholder">
+                    <i class="fa-solid fa-circle-play" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">${file.name}</p>
+                </div>
                 <div class="media-overlay">
-                    <a href="${downloadUrl}" class="btn btn-primary btn-sm" title="Descargar">
+                    <a href="https://drive.google.com/file/d/${file.id}/view" target="_blank" class="btn btn-primary btn-sm" title="Ver Video">
+                        <i class="fa-solid fa-play"></i>
+                    </a>
+                    <a href="${directUrl}" class="btn btn-secondary btn-sm" title="Descargar" style="margin-left: 0.5rem;">
                         <i class="fa-solid fa-download"></i>
                     </a>
                 </div>
             `;
         } else {
+            // Para imágenes, intentar con el proxy de Google
             card.innerHTML = `
-                <iframe src="${viewUrl}" class="media-preview" frameborder="0"></iframe>
+                <img src="${proxyUrl}" alt="${file.name}" class="media-preview" loading="lazy"
+                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'image-error\\'><i class=\\'fa-solid fa-image\\' style=\\'font-size:2rem;color:#666\\'></i><p>${file.name}</p></div>';">
                 <div class="media-overlay">
-                    <a href="${downloadUrl}" class="btn btn-primary btn-sm" title="Descargar">
+                    <a href="https://drive.google.com/file/d/${file.id}/view" target="_blank" class="btn btn-primary btn-sm" title="Ver">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    <a href="${directUrl}" class="btn btn-secondary btn-sm" title="Descargar" style="margin-left: 0.5rem;">
                         <i class="fa-solid fa-download"></i>
                     </a>
                 </div>
