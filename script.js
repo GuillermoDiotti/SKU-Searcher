@@ -58,6 +58,8 @@ async function handleSearch() {
 
         const data = await response.json();
         console.log('Datos recibidos:', data); // AGREGAR ESTA LÍNEA
+        console.log('Archivos recibidos:', data.files);
+        console.log('Primer archivo:', data.files[0]);
 
 
         if (data.status === 'error') {
