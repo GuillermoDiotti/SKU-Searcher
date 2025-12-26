@@ -4,16 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de SKUs - Muebles</title>
-
+    <title>Buscador SKUs</title>
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -25,12 +20,7 @@
         <header class="app-header">
             <div class="logo-area">
                 <i class="fa-solid fa-couch logo-icon"></i>
-                <h1>Buscador de Productos</h1>
-            </div>
-            <div class="header-actions">
-                <button id="auth-btn" class="btn btn-secondary" disabled>
-                    <i class="fa-brands fa-google"></i> <span id="auth-text">Cargando...</span>
-                </button>
+                <h1>Buscador de SKUs</h1>
             </div>
         </header>
 
@@ -38,9 +28,8 @@
             <div class="search-container glass-panel">
                 <div class="input-group">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="sku-input" placeholder="Ingrese el código SKU..." autocomplete="off"
-                        disabled>
-                    <button id="search-btn" class="btn btn-primary" disabled>Buscar</button>
+                    <input type="text" id="sku-input" placeholder="Ingrese el código SKU..." autocomplete="off">
+                    <button id="search-btn" class="btn btn-primary">Buscar</button>
                 </div>
             </div>
         </section>
@@ -49,12 +38,10 @@
             <div class="results-header">
                 <h2 id="results-title">Resultados</h2>
             </div>
-            <div id="media-grid" class="media-grid">
-                <!-- Items -->
-            </div>
+            <div id="media-grid" class="media-grid"></div>
             <div id="loader" class="loader hidden">
                 <div class="spinner"></div>
-                <p>Buscando...</p>
+                <p>Buscando en Drive...</p>
             </div>
         </section>
 
@@ -63,12 +50,7 @@
         </section>
     </main>
 
-    <!-- App Script -->
     <script src="script.js"></script>
-
-    <!-- Google Scripts -->
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
 </body>
 
 </html>
