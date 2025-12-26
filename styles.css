@@ -225,6 +225,19 @@ body {
         padding: 1rem;
     }
 
+    .input-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .input-group input {
+        width: 100%;
+    }
+
+    .input-group button {
+        width: 100%;
+    }
+
     .media-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
