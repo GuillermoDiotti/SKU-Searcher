@@ -100,16 +100,14 @@ function renderResults(files) {
                     </a>
                 </div>
             `;
-        } else {
-            const imgSrc = file.thumbnail || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23333" width="200" height="200"/></svg>';
+} else {
+            // Usar thumbnail base64 si existe, sino placeholder
+            const imgSrc = file.thumbnail || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="%23333" width="200" height="200"/><text x="50%" y="50%" text-anchor="middle" fill="white" dy=".3em" font-size="14">Cargando...</text></svg>';
             
             card.innerHTML = `
                 <img src="${imgSrc}" alt="${file.name}" class="media-preview" loading="lazy">
                 <div class="media-overlay">
-                    <a href="${file.viewUrl}" target="_blank" class="btn btn-primary btn-sm" title="Ver">
-                        <i class="fa-solid fa-eye"></i>
-                    </a>
-                    <a href="${file.downloadUrl}" download class="btn btn-secondary btn-sm" title="Descargar" style="margin-left: 0.5rem;">
+                    <a href="${file.downloadUrl}" download class="btn btn-primary btn-sm" title="Descargar">
                         <i class="fa-solid fa-download"></i>
                     </a>
                 </div>
