@@ -83,6 +83,8 @@ async function handleSearch() {
 function renderResults(files) {
     els.resultsSection.classList.remove('hidden');
 
+    allFiles = files; // Guardar archivos para descarga masiva
+
     files.forEach(file => {
         const card = document.createElement('div');
         card.className = 'media-card';
@@ -136,3 +138,22 @@ function openVideoModal(fileId, fileName) {
     const viewUrl = `https://drive.google.com/file/d/${fileId}/view`;
     window.open(viewUrl, '_blank');
 }
+
+// Descargar todos los archivos
+let allFiles = [];
+
+function setupDownloadAll() {
+    const downloadAllBtn = document.getElementById('download-all-btn');
+    downloadAllBtn.addEventListener('click', () => {
+        allFiles.forEach((file, index) => {
+            setTimeout(() => {
+                const a = document.createElement('a');
+                a.href = file.downloadUrl;
+                a.download = file.name;
+                a.click();
+            }, index * 500); // Delay para no saturar
+        });
+    });
+}
+
+setupDownloadAll();
